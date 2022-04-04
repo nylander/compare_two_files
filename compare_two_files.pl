@@ -11,18 +11,18 @@
 #                ./compare_two_files.pl --man for more info.
 #
 #      CREATED:  02/11/2008 10:27:45 AM CEST
-#     REVISION:  Mon  4 apr 2022 15:16:44
+#     REVISION:  Mon 4 apr 2022 15:16:44
 #
 #===============================================================================
 
 use strict;
 use warnings;
-use File::Slurp;
-use List::Compare;
 use Data::Dumper;
+use File::Basename;
+use File::Slurp;
 use Getopt::Long;
+use List::Compare;
 use Pod::Usage;
-
 
 ## Globals
 my $silent               = 0; # default is interactive
@@ -41,7 +41,6 @@ my ($LorRonly_size, $first_list_size, $second_list_size);
 my ($first_file_unique, $second_file_unique, $first_and_second_intersection_file);
 my ($lc, $query, $res, $first_file, $second_file, $eqv, $disj);
 my ($unique1, $unique2, $union, $intersection);
-
 
 #===  FUNCTION  ================================================================
 #         NAME:  promptUser
@@ -76,23 +75,24 @@ sub promptUser {
 
 } # end of promptUser()
 
-
-## Get arguments and files
-GetOptions('silent'       => \$silent,
-           'union'        => \$union,
-           'intersection' => \$intersection,
-           '1|one'          => \$unique1,
-           '2|two'          => \$unique2,
-           'help'         => sub { pod2usage(1); },
-           'man'          => sub { pod2usage(-exitstatus => 0, -verbose => 2); });
+## Get arguments
+GetOptions(
+    'silent'       => \$silent,
+    'union'        => \$union,
+    'intersection' => \$intersection,
+    '1|one'        => \$unique1,
+    '2|two'        => \$unique2,
+    'help'         => sub { pod2usage(1); },
+    'man'          => sub { pod2usage(-exitstatus => 0, -verbose => 2); }
+);
 
 die "Input error. Try $0 --help for more info\n" unless (@ARGV == 2);
 
+## Read files
 $first_file  = shift(@ARGV);
 $second_file = shift(@ARGV);
 @first_list  = read_file($first_file);
 @second_list = read_file($second_file);
-
 
 ## Compare files
 $lc          = List::Compare->new(\@first_list, \@second_list);
@@ -122,6 +122,7 @@ if ($disj) { # if lists are either too similar/dissimilar: go no further
 if (($LorRonly_size == 0) && ($first_list_size == $second_list_size)) {
     die "the lists in the two files have the same items\n"
 }
+
 ## Output to STDERR
 if ($union) {
     foreach (@union) {
@@ -147,10 +148,13 @@ elsif ($unique2) {
     }
     exit(0);
 }
+
 ## Output to screen or files
-$first_file_unique = $first_file . ".unique";
-$second_file_unique = $second_file . ".unique";
-$first_and_second_intersection_file = $first_file . "." . $second_file . ".intersection";
+my $ff = basename($first_file);
+my $sf = basename($second_file);
+$first_file_unique = $ff . ".unique";
+$second_file_unique = $sf . ".unique";
+$first_and_second_intersection_file = $ff . "." . $sf . ".intersection";
 
 if ($silent) {
     write_file($first_file_unique, @first_only);
@@ -176,6 +180,7 @@ else {
             print STDOUT;
         }
     }
+
     ## Second file
     $query = promptUser("\nUnique values in \'$second_file\':\n Write to file \'$second_file_unique\' (F) or to screen (S)? ", "S");
     if ($query =~ /F/i) {
@@ -186,6 +191,7 @@ else {
             print STDOUT;
         }
     }
+
     ## Both files
     $query = promptUser("\nShared values (intersection) in \'$first_file\' and \'$second_file\':\n Write to file (\'$first_and_second_intersection_file\') (F) or to screen (S)? ", "S");
     if ($query =~ /F/i) {
@@ -202,7 +208,7 @@ else {
 exit(0);
 
 #===  POD DOCUMENTATION  =======================================================
-#      VERSION:  10/10/2011 10:53:41 AM
+#      VERSION:  Mon 4 apr 2022 15:24:05
 #  DESCRIPTION:  Documentation
 #         TODO:  ?
 #===============================================================================
@@ -215,7 +221,7 @@ compare_two_files.pl
 
 =head1 VERSION
 
-Documentation for compare_two_files.pl version 1.0
+Documentation for compare_two_files.pl version 1.1
 
 
 =head1 SYNOPSIS
@@ -297,31 +303,37 @@ Examples:
 Written by Johan A. A. Nylander
 
 
-=head1 REPORTING BUGS
-
-Please report any bugs to I<jnylander @ users.sourceforge.net>.
-
-
 =head1 DEPENDENCIES
 
 Perl modules from CRAN: File::Slurp, List::Compare.
 
 
+=head1 DOWNLOAD
+
+L<https://github.com/nylander/compare_two_files>
+
+
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (c) 2009 Johan Nylander. All rights reserved.
+Copyright (c) 2008-2022 Johan Nylander
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details. 
-http://www.gnu.org/copyleft/gpl.html 
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 =cut
 
