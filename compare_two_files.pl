@@ -4,6 +4,7 @@
 #         FILE:  compare_two_files.pl
 #        USAGE:  ./compare_two_files.pl [options] FILE1 FILE2
 #  DESCRIPTION:  Compares two lists in two separate files.
+#       AUTHOR:  Johan Nylander
 #      CREATED:  02 Nov 2008
 #     REVISION:  12 Apr 2025
 #=============================================================
@@ -81,7 +82,7 @@ sub prompt_user {
 sub check_file_exists {
     my ($filename) = @_;
     if (-e $filename) {
-        die "Error: File '$filename' exists. Cowardly refusing to overwrite; exiting.\n";
+        die "ERROR: File '$filename' exists. Cowardly refusing to overwrite, exiting.\n";
     }
 }
 
