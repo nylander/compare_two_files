@@ -45,7 +45,7 @@ Default is to be interactive (use `-n` to be non-interactive).
 
 ## License and Copyright
 
-Copyright (c) 2008-2022 Johan Nylander. All rights reserved.
+Copyright (c) 2008-2025 Johan Nylander. All rights reserved.
 
 [MIT License](LICENSE)
 
