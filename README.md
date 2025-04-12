@@ -1,87 +1,51 @@
-## NAME
+# Compare two files
 
-    compare_two_files.pl
+## Description
 
-## VERSION
+This script compares two lists in separate files and provides options to compute
+their union, intersection, or unique items in each file.
 
-Documentation for `compare_two_files.pl` version 1.1
+Prints to stdout (options `-u`, `-i`, `-1`, `-2`) or to files (options `-n`, `-s`).
 
-## SYNOPSIS
+Default is to be interactive (use `-n` to be non-interactive).
 
-    compare_two_files.pl [--union|--intersection|--one|--two|--silent]
-    [--help] [--man] FILE1 FILE2
+## Usage
 
-## DESCRIPTION
+    $ compare_two_files.pl [--union|--intersection|--one|--two|--silent] [--help] FILE1 FILE2
 
-Compares two lists in two separate files.
+## Options
 
-Shows the results interactively, or, if the `--silent` option is used, silently.
+`-u`, `--union`        --- Print the union of items in FILE1 and FILE2 to stdout
 
-Unique values in the first and second files can be extracted using the
-`-1`, `--one`, or `-2`, `--two` options, respectively, as well as the
-intersection (`--intersection`), and union (`--union`).
+`-i`, `--intersection` --- Print the intersection of items in FILE1 and FILE2 to stdout
 
-## OPTIONS
+`-1`, `--one`          --- Print items unique in FILE1 to stdout
 
-Mandatory arguments to long options are mandatory for short options too
+`-2`, `--two`          --- Print items unique in FILE2 to stdout
 
-    -u, --union
-            Get those items which appear at least once in either FILE1 and
-            FILE2 (their *union*).
+`-n`, `--noverbose`    --- Run in silent mode (write results to files)
 
-    -i, --intersection
-            Get those items which appear at least once in both FILE1 and
-            FILE2 (their *intersection*).
+`-s`, `--silent`       --- Same as `-n` (for backwards compatibility)
 
-    -1, -o, --one
-            Print the *unique* values in list from FILE1.
+`-h`, `--help`         --- Print this help message and exit
 
-    -2, -t, --two
-            Print the *unique* values in list from FILE2.
+`-V`, `--version`      --- Print software version
 
-    -h, --help
-            Prints *help* message and exits.
+## Examples
 
-    -m, --man
-            Displays the *manual* page.
+    $ compare_two_files.pl FILE1 FILE2
+    $ compare_two_files.pl --noverbose FILE1 FILE2
+    $ compare_two_files.pl --union FILE1 FILE2
+    $ compare_two_files.pl --intersection FILE1 FILE2
+    $ compare_two_files.pl --one FILE1 FILE2
 
-    FILEN   FILE, and FILE2 should contain lists to be compared (one in each
-            file).
-
-## USAGE
-
-Examples:
-
-    compare_two_files.pl FILE1 FILE2
-    compare_two_files.pl --silent FILE1 FILE2
-    compare_two_files.pl --union FILE1 FILE2
-    compare_two_files.pl --intersection FILE1 FILE2
-    compare_two_files.pl -1 FILE1 FILE2
-    compare_two_files.pl -2 FILE1 FILE2
-
-## AUTHOR
-
-Written by Johan A. A. Nylander
-
-## DEPENDENCIES
-
-Perl modules from CRAN: File::Slurp, List::Compare.
-
-## DOWNLOAD
+## Download
 
 <https://github.com/nylander/compare_two_files>
 
-## LICENSE AND COPYRIGHT
+## License and Copyright
 
-Copyright (c) 2009-2022 Johan Nylander. All rights reserved.
+Copyright (c) 2008-2022 Johan Nylander. All rights reserved.
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the
-Free Software Foundation; either version 2 of the License, or (at your
-option) any later version.
-
-This program is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-Public License for more details. <http://www.gnu.org/copyleft/gpl.html>
+[MIT Licence](LICENSE)
 
